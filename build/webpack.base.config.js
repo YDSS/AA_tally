@@ -1,5 +1,6 @@
 const path = require('path');
-const WebpackHtmlPlugin = require('webpack-html-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Stylish = require('webpack-stylish');
 
 module.exports = {
     entry: path.resolve('src/index.js'),
@@ -25,9 +26,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new WebpackHtmlPlugin({
-            template: path.resolve('src/index.html'),
+        new HtmlWebpackPlugin({
+            template: 'src/index.html',
             filename: 'index.html'
-        })
+        }),
+        new Stylish(),
     ]
 }
