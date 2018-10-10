@@ -8,6 +8,7 @@ export default [
         date: new Date('2018-9-27'),
         desc: '电话卡充流量',
         category: CATEGORY.OTHERS,
+        participants: [PARTICIPANT.YANG, PARTICIPANT.JIAN, PARTICIPANT.PC, PARTICIPANT.MAY],
     },
     {
         payment: 6,
@@ -16,6 +17,7 @@ export default [
         date: new Date('2018-9-27'),
         desc: '机场高速收费',
         category: CATEGORY.TRAFFIC,
-        subCate: SUBCATE.PARKING
+        subCate: SUBCATE.PARKING,
+        participants: [PARTICIPANT.YANG, PARTICIPANT.JIAN, PARTICIPANT.PC, PARTICIPANT.MAY],
     },
 ]

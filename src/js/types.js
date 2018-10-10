@@ -5,6 +5,14 @@ export const CURRENCY = {
     USD: "USD",
 };
 export const PARTICIPANT = {
+    YANG: "YANG",
+    JIAN: "JIAN",
+    PC: "PC",
+    MAY: "MAY",
+    // 公共支出，用本地货币支付
+    CASH: "CASH"
+};
+export const PARTICIPANT_CH = {
     YANG: "兰追",
     JIAN: "剑飞",
     PC: "超妹儿",

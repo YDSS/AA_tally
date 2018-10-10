@@ -1,13 +1,14 @@
 import { CURRENCY } from './types';
 
 export default {
-    num: 13369,
-    currency: CURRENCY.DH
+    num: 1500,
+    currency: CURRENCY.USD
 }
 
+// 资产占比，由美元兑换的DH算得
 export const possessRate = {
-    YANG: 33.3,
-    JIAN: 20,
-    PC: 26.7,
-    MAY: 20, 
+    YANG: 0.33,
+    JIAN: 0.2,
+    PC: 0.27,
+    MAY: 0.2, 
 }
