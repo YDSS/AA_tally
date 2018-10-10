@@ -1,1 +1,3 @@
-console.log(111);
+import calculateAA from './js/aa';
+
+calculateAA();

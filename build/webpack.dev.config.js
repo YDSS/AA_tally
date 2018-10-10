@@ -7,5 +7,6 @@ module.exports = merge(baseConfig, {
     devServer: {
         port: 3000,
         compress: true,
+        contentBase: './public',
     },
 })
