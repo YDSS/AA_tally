@@ -67,10 +67,7 @@ export default function aa() {
                     let consume = consumes[consumer];
                     let possess = possesses[consumer];
                     let debt = possess - consume;
-                    debts[consumer] = {
-                        num: debt,
-                        currency: CURRENCY.DH
-                    };
+                    debts[consumer] = debt;
 
                     console.log(`${consumer} has debt ￥${debt}`);
                 }
@@ -79,4 +76,28 @@ export default function aa() {
 
         return debts;
     }
+}
+
+export function payByAA(debts) {
+    // 从大到小排序debts，从负值开始截断，以区分谁该向谁付钱
+    let debts = debts.sort((a, b) => a > b); 
+    let [ payee, payer ] = truncateArrayFromNegative(debts);
+    let tracks = []; // string[], 记录每一笔偿还
+    
+    let i = 0; // payee游标
+    let j = 0; // payer游标
+    while (i === payee.length && j === payer.length) {
+        let remain = payee[i] + payer[j];
+        if (remain >= 0) {
+            tracks.push(`${j} 应向 ${i} 支付 ￥${Math.abs(payer[j])}`);
+        }
+        else {
+            tracks.push(`${j} 应向 ${i} 支付 ￥${payee[i]}`);
+        }
+    }
+}
+
+function truncateArrayFromNegative(arr) {
+    let firstNegativeIndex = arr.find(num => num < 0);
+    return [arr.slice(0, firstNegativeIndex + 1), arr.slice(firstNegativeIndex + 1)];
 }
