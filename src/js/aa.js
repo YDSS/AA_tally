@@ -80,24 +80,33 @@ export default function aa() {
 
 export function payByAA(debts) {
     // 从大到小排序debts，从负值开始截断，以区分谁该向谁付钱
-    let debts = debts.sort((a, b) => a > b); 
+    debts = debts.sort((a, b) => b - a); 
+
     let [ payee, payer ] = truncateArrayFromNegative(debts);
     let tracks = []; // string[], 记录每一笔偿还
     
     let i = 0; // payee游标
     let j = 0; // payer游标
-    while (i === payee.length && j === payer.length) {
+
+    while (i !== payee.length && j !== payer.length) {
         let remain = payee[i] + payer[j];
         if (remain >= 0) {
-            tracks.push(`${j} 应向 ${i} 支付 ￥${Math.abs(payer[j])}`);
+            tracks.push(`payer${j} 应向 payee${i} 支付 ￥${Math.abs(payer[j])}`);
+            payee[i] = remain;
+            j++;
+            remain === 0 && i++;
         }
-        else {
-            tracks.push(`${j} 应向 ${i} 支付 ￥${payee[i]}`);
+        else if (remain < 0) {
+            tracks.push(`payer${j} 应向 payee${i} 支付 ￥${payee[i]}`);
+            payer[j] = remain; 
+            i++;
         }
     }
+
+    return tracks;
 }
 
 function truncateArrayFromNegative(arr) {
-    let firstNegativeIndex = arr.find(num => num < 0);
-    return [arr.slice(0, firstNegativeIndex + 1), arr.slice(firstNegativeIndex + 1)];
+    let firstNegativeIndex = arr.findIndex(num => num < 0);
+    return [arr.slice(0, firstNegativeIndex), arr.slice(firstNegativeIndex)];
 }

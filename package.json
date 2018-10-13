@@ -36,6 +36,8 @@
     "webpack-stylish": "^0.1.8"
   },
   "dependencies": {
-    "art-template": "^4.13.1"
+    "art-template": "^4.13.1",
+    "koa": "^2.5.3",
+    "koa-router": "^7.4.0"
   }
 }
