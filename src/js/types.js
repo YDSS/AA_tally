@@ -18,7 +18,7 @@ export const PARTICIPANT_CH = {
     PC: "超妹儿",
     MAY: "姚倩",
     // 公共支出，用本地货币支付
-    CASH: "CASH"
+    CASH: "公共支出"
 };
 export const CATEGORY = {
     HOTEL: "住宿",
@@ -27,9 +27,17 @@ export const CATEGORY = {
     OTHERS: "其他"
 };
 export const SUBCATE = {
+    RIAD: "传统庭院",
+    AP: "公寓",
+    HOTEL: "酒店",
+    CHFOOD: "中餐",
+    MOFOOD: "摩洛哥菜",
+    FRFOOD: "法国菜",
+    SPFOOD: "西班牙菜",
     PARKING: "停车费",
     OIL: "油费",
     RENTAL: "租车",
     TAXI: "打车",
     TIP: "小费"
 };
+

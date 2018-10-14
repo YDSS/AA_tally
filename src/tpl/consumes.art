@@ -1,0 +1,26 @@
+<table class="consume-table table">
+    <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>金额</th>
+            <th>付款人</th>
+            <th>参与人</th>
+            <th>描述</th>
+            <th>时间</th>
+            <th>币种</th>
+        </tr>
+    </div>
+    <tbody>
+    {{each list item index}}
+    <tr>
+        <th>{{index}}</th>
+        <td>{{item.payment}}</td>
+        <td>{{item.payerCH}}</td>
+        <td>{{item.participantsCH.join(',')}}</td>
+        <td>{{item.desc}}</td>
+        <td>{{item.date}}</td>
+        <td>{{item.currency}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>

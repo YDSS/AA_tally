@@ -1,13 +1,46 @@
 import data from "./consumeData";
 import cash, { possessRate } from "./cashData";
-import { PARTICIPANT, CURRENCY } from "./types";
+import { PARTICIPANT, CURRENCY, PARTICIPANT_CH } from "./types";
 import { exchangeToRMB } from "./utils";
 
-export default function aa() {
+import consumeRenderer from '../tpl/consumes.art';
+import settlementRenderer from '../tpl/settlement.art';
+
+// 初始化aa部分
+export default function init() {
+    // 计算人均消费等数据
+    let results = calcAA();
+    // 渲染需要展示的数据
+    renderData(results);
+}
+
+export function calcAA() {
     let possesses = calcEveryonePossess();
     let consumes = calcEveryoneConsume();
     let debts = calcEveryoneDebt();
+    console.log(debts);
+    let totalPossess = getTotal(possesses);
+    let totalConsume = getTotal(consumes);
+    console.log(`总支出￥${totalPossess}`);
+    console.log(`总消费￥${totalConsume}`);
+    console.log(`未被记录的消费总额￥${totalPossess - totalConsume}, 人均￥${(totalPossess - totalConsume) / 4}`);
+    let aaTracks = payByAA(debts);
 
+    if (aaTracks) {
+        aaTracks.map(item => {
+            console.log(item);
+        })
+    }
+
+    return {
+        possesses,
+        consumes,
+        debts,
+        totalPossess,
+        totalConsume,
+        aaTracks,
+    };
+    
     function calcEveryoneConsume() {
         // 初始化消费者
         let consumes = {};
@@ -59,7 +92,7 @@ export default function aa() {
     }
 
     function calcEveryoneDebt() {
-        let debts = {};
+        let debts = [];
 
         for (let consumer in consumes) {
             if (consumes.hasOwnProperty(consumer)) {
@@ -67,9 +100,13 @@ export default function aa() {
                     let consume = consumes[consumer];
                     let possess = possesses[consumer];
                     let debt = possess - consume;
-                    debts[consumer] = debt;
+                    debts.push({
+                        consumer,
+                        num: debt,
+                        currency: CURRENCY.RMB
+                    });
 
-                    console.log(`${consumer} has debt ￥${debt}`);
+                    console.log(`${consumer} 总共支出了￥${possess}, 消费了￥${consume} ${debt < 0 ? '需还￥' + Math.abs(debt) : ''}`);
                 }
             }
         }
@@ -80,9 +117,12 @@ export default function aa() {
 
 export function payByAA(debts) {
     // 从大到小排序debts，从负值开始截断，以区分谁该向谁付钱
-    debts = debts.sort((a, b) => b - a); 
+    debts = debts.sort((a, b) => b.num - a.num); 
 
     let [ payee, payer ] = truncateArrayFromNegative(debts);
+    if (!payer || !payer.length) return null;
+    return;
+
     let tracks = []; // string[], 记录每一笔偿还
     
     let i = 0; // payee游标
@@ -107,6 +147,66 @@ export function payByAA(debts) {
 }
 
 function truncateArrayFromNegative(arr) {
-    let firstNegativeIndex = arr.findIndex(num => num < 0);
+    let firstNegativeIndex = arr.findIndex(item => item.num < 0);
+    if (firstNegativeIndex === -1) {
+        return [arr, null];
+    }
     return [arr.slice(0, firstNegativeIndex), arr.slice(firstNegativeIndex)];
+}
+
+function getTotal(nums) {
+    let total = 0;
+
+    for (let i in nums) {
+        if (nums.hasOwnProperty(i)) {
+            total += nums[i];            
+        }
+    }
+
+    return total;
+}
+
+function renderData(results) {
+    let dataCH = transDataToCH();
+    renderConsumeTable(dataCH);
+    renderSettlement(results);
+}
+
+function renderConsumeTable(data) {
+    let html = consumeRenderer({
+        list: data
+    });
+    $('.section-aa .consume-table-wrapper').html(html);
+}
+
+function renderSettlement(results) {
+    let html = settlementRenderer({
+        tracks: results.aaTracks,
+        others: [
+            {
+                title: '总支出',
+                num: results.totalPossess,
+            },
+            {
+                title: '总消费',
+                num: results.totalConsume,
+            },
+            {
+                title: '未被记录的消费',
+                num: results.totalPossess - results.totalConsume,
+            },
+        ]
+    });
+    $('.wrapper .settlement-wrapper').html(html);
+}
+
+function transDataToCH() {
+    return data.map(item => {
+        return Object.assign({}, item, {
+            payerCH: PARTICIPANT_CH[item.payer],
+            participantsCH: item.participants.map(p => {
+                return PARTICIPANT_CH[p]
+            })
+        });
+    });
 }
