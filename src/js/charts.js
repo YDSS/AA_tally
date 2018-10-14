@@ -32,6 +32,7 @@ function getCategoryOption() {
                 SUBCATE.RIAD,
                 SUBCATE.AP,
                 SUBCATE.HOTEL,
+                SUBCATE.TENT,
                 SUBCATE.CHFOOD,
                 SUBCATE.MOFOOD,
                 SUBCATE.FRFOOD,
@@ -155,6 +156,10 @@ function classifyCategoryData() {
             value: 0,
         },
         {
+            name: SUBCATE.TENT,
+            value: 0,
+        },
+        {
             name: SUBCATE.CHFOOD,
             value: 0,
         },
@@ -168,6 +173,10 @@ function classifyCategoryData() {
         },
         {
             name: SUBCATE.SPFOOD,
+            value: 0,
+        },
+        {
+            name: SUBCATE.WEFOOD,
             value: 0,
         },
         {
@@ -195,15 +204,17 @@ function classifyCategoryData() {
         [SUBCATE.RIAD]: 0,
         [SUBCATE.AP]: 1,
         [SUBCATE.HOTEL]: 2,
-        [SUBCATE.CHFOOD]: 3,
-        [SUBCATE.MOFOOD]: 4,
-        [SUBCATE.FRFOOD]: 5,
-        [SUBCATE.SPFOOD]: 6,
-        [SUBCATE.PARKING]: 7,
-        [SUBCATE.OIL]: 8,
-        [SUBCATE.RENTAL]: 9,
-        [SUBCATE.TAXI]: 10,
-        [SUBCATE.TIP]: 11,
+        [SUBCATE.TENT]: 3,
+        [SUBCATE.CHFOOD]: 4,
+        [SUBCATE.MOFOOD]: 5,
+        [SUBCATE.FRFOOD]: 6,
+        [SUBCATE.SPFOOD]: 7,
+        [SUBCATE.WEFOOD]: 8,
+        [SUBCATE.PARKING]: 9,
+        [SUBCATE.OIL]: 10,
+        [SUBCATE.RENTAL]: 11,
+        [SUBCATE.TAXI]: 12,
+        [SUBCATE.TIP]: 13,
     }
 
     data.map(item => {

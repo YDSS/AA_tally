@@ -3,8 +3,8 @@ import cash, { possessRate } from "./cashData";
 import { PARTICIPANT, CURRENCY, PARTICIPANT_CH } from "./types";
 import { exchangeToRMB } from "./utils";
 
-import consumeRenderer from '../tpl/consumes.art';
-import settlementRenderer from '../tpl/settlement.art';
+import consumeRenderer from "../tpl/consumes.art";
+import settlementRenderer from "../tpl/settlement.art";
 
 // 初始化aa部分
 export default function init() {
@@ -18,18 +18,27 @@ export function calcAA() {
     let possesses = calcEveryonePossess();
     let consumes = calcEveryoneConsume();
     let debts = calcEveryoneDebt();
+    debugger
     console.log(debts);
     let totalPossess = getTotal(possesses);
     let totalConsume = getTotal(consumes);
+    let untracked = totalPossess - totalConsume;
     console.log(`总支出￥${totalPossess}`);
     console.log(`总消费￥${totalConsume}`);
-    console.log(`未被记录的消费总额￥${totalPossess - totalConsume}, 人均￥${(totalPossess - totalConsume) / 4}`);
+    console.log(
+        `未被记录的消费总额￥${untracked}, 人均￥${untracked / 4}`
+    );
+    // 把未被记录的消费平摊到每个人的消费里
+    Object.keys(consumes).map(consumer => {
+        consumes[consumer] += untracked / 4;
+    });
+    debugger
     let aaTracks = payByAA(debts);
 
     if (aaTracks) {
         aaTracks.map(item => {
             console.log(item);
-        })
+        });
     }
 
     return {
@@ -38,14 +47,18 @@ export function calcAA() {
         debts,
         totalPossess,
         totalConsume,
-        aaTracks,
+        aaTracks
     };
-    
+
     function calcEveryoneConsume() {
         // 初始化消费者
         let consumes = {};
         for (let consumer in PARTICIPANT) {
-            if (PARTICIPANT.hasOwnProperty(consumer) && consumer !== PARTICIPANT.CASH) {
+            if (
+                PARTICIPANT.hasOwnProperty(consumer) &&
+                consumer !== PARTICIPANT.CASH
+                && consumer !== 'ALL'
+            ) {
                 consumes[consumer] = 0;
             }
         }
@@ -77,13 +90,17 @@ export function calcAA() {
         // 将cash转成RMB，便于计算
         if (cash.currency !== CURRENCY.RMB) {
             cash.num = exchangeToRMB({
-                value: cash.num, 
-                currency: cash.currency,
+                value: cash.num,
+                currency: cash.currency
             });
             cash.currency = CURRENCY.RMB;
         }
         for (let participant in PARTICIPANT) {
-            if (PARTICIPANT.hasOwnProperty(participant) && participant !== PARTICIPANT.CASH) {
+            if (
+                PARTICIPANT.hasOwnProperty(participant) &&
+                participant !== PARTICIPANT.CASH &&
+                participant !== 'ALL'
+            ) {
                 possesses[participant] = possessRate[participant] * cash.num;
             }
         }
@@ -106,7 +123,11 @@ export function calcAA() {
                         currency: CURRENCY.RMB
                     });
 
-                    console.log(`${consumer} 总共支出了￥${possess}, 消费了￥${consume} ${debt < 0 ? '需还￥' + Math.abs(debt) : ''}`);
+                    console.log(
+                        `${consumer} 总共支出了￥${possess}, 消费了￥${consume} ${
+                            debt < 0 ? "需还￥" + Math.abs(debt) : ""
+                        }`
+                    );
                 }
             }
         }
@@ -117,28 +138,28 @@ export function calcAA() {
 
 export function payByAA(debts) {
     // 从大到小排序debts，从负值开始截断，以区分谁该向谁付钱
-    debts = debts.sort((a, b) => b.num - a.num); 
+    debts = debts.sort((a, b) => b.num - a.num);
 
-    let [ payee, payer ] = truncateArrayFromNegative(debts);
+    let [payee, payer] = truncateArrayFromNegative(debts);
     if (!payer || !payer.length) return null;
-    return;
 
     let tracks = []; // string[], 记录每一笔偿还
-    
+
     let i = 0; // payee游标
     let j = 0; // payer游标
 
     while (i !== payee.length && j !== payer.length) {
         let remain = payee[i] + payer[j];
         if (remain >= 0) {
-            tracks.push(`payer${j} 应向 payee${i} 支付 ￥${Math.abs(payer[j])}`);
+            tracks.push(
+                `payer${j} 应向 payee${i} 支付 ￥${Math.abs(payer[j])}`
+            );
             payee[i] = remain;
             j++;
             remain === 0 && i++;
-        }
-        else if (remain < 0) {
+        } else if (remain < 0) {
             tracks.push(`payer${j} 应向 payee${i} 支付 ￥${payee[i]}`);
-            payer[j] = remain; 
+            payer[j] = remain;
             i++;
         }
     }
@@ -159,7 +180,7 @@ function getTotal(nums) {
 
     for (let i in nums) {
         if (nums.hasOwnProperty(i)) {
-            total += nums[i];            
+            total += nums[i];
         }
     }
 
@@ -176,7 +197,7 @@ function renderConsumeTable(data) {
     let html = consumeRenderer({
         list: data
     });
-    $('.section-aa .consume-table-wrapper').html(html);
+    $(".section-aa .consume-table-wrapper").html(html);
 }
 
 function renderSettlement(results) {
@@ -184,20 +205,20 @@ function renderSettlement(results) {
         tracks: results.aaTracks,
         others: [
             {
-                title: '总支出',
-                num: results.totalPossess,
+                title: "总支出",
+                num: results.totalPossess
             },
             {
-                title: '总消费',
-                num: results.totalConsume,
+                title: "总消费",
+                num: results.totalConsume
             },
             {
-                title: '未被记录的消费',
-                num: results.totalPossess - results.totalConsume,
-            },
+                title: "未被记录的消费",
+                num: results.totalPossess - results.totalConsume
+            }
         ]
     });
-    $('.wrapper .settlement-wrapper').html(html);
+    $(".wrapper .settlement-wrapper").html(html);
 }
 
 function transDataToCH() {
@@ -205,7 +226,7 @@ function transDataToCH() {
         return Object.assign({}, item, {
             payerCH: PARTICIPANT_CH[item.payer],
             participantsCH: item.participants.map(p => {
-                return PARTICIPANT_CH[p]
+                return PARTICIPANT_CH[p];
             })
         });
     });

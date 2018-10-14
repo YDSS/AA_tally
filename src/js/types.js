@@ -10,7 +10,8 @@ export const PARTICIPANT = {
     PC: "PC",
     MAY: "MAY",
     // 公共支出，用本地货币支付
-    CASH: "CASH"
+    CASH: "CASH",
+    ALL: ["YANG", "JIAN", "PC", "MAY"],
 };
 export const PARTICIPANT_CH = {
     YANG: "兰追",
@@ -30,10 +31,12 @@ export const SUBCATE = {
     RIAD: "传统庭院",
     AP: "公寓",
     HOTEL: "酒店",
+    TENT: "帐篷",
     CHFOOD: "中餐",
     MOFOOD: "摩洛哥菜",
     FRFOOD: "法国菜",
     SPFOOD: "西班牙菜",
+    WEFOOD: "西餐",
     PARKING: "停车费",
     OIL: "油费",
     RENTAL: "租车",
