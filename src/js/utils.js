@@ -3,9 +3,9 @@ import { CURRENCY } from './types';
 
 export function exchangeToRMB({value, currency}) {
     if (currency === CURRENCY.RMB) {
-        return value;
+        return +(value.toFixed(2));
     }
 
     let rate = exchangeRate[currency];
-    return value * rate;
+    return +((value * rate).toFixed(2));
 }

@@ -1,4 +1,4 @@
-import calculateAA from './js/aa';
+import calculateAA, {payByAA} from './js/aa';
 import initCharts from './js/charts';
 
 import './less/bootstrap.css';

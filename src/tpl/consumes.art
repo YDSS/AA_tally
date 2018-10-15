@@ -1,3 +1,4 @@
+<div class="table-wrapper">
 <table class="consume-table table">
     <thead class="thead-light">
         <tr>
@@ -12,7 +13,7 @@
     </div>
     <tbody>
     {{each list item index}}
-    <tr>
+    <tr {{if (item.payer !== 'CASH')}}class="hl"{{/if}}>
         <th>{{index}}</th>
         <td>{{item.payment}}</td>
         <td>{{item.payerCH}}</td>
@@ -24,3 +25,5 @@
     {{/each}}
     </tbody>
 </table>
+</div>
+<a href="javascript:;" class="btn fold">展开</a>

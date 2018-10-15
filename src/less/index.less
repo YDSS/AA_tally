@@ -12,6 +12,26 @@ body {
     background-color: #fff;
 }
 
+.h1,.h2,.h3 {
+    position: relative;
+    padding-left: 15px;
+
+    &:before {
+        content: " ";
+        position: absolute; 
+        left: 0;
+        top: 5px;
+        display: block;
+        width: 8px;
+        height: 80%;
+        background: #da771f;
+    }
+}
+
+.h1 {
+    margin-bottom: 20px;
+}
+
 @w: 1000px;
 .wrapper {
     @media screen and (min-width: @w) {
@@ -22,16 +42,31 @@ body {
     @media screen and (max-width: @w+1) {
         width: 100%;
     }
+
+    .content {
+        margin-left: 40px;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        margin-top: 10px;
+    }
 }
 
 // 消费记录表
-.consume-table {
+.table-wrapper {
+    height: 400px;
+    overflow: hidden;
 
+    .hl {
+        background-color: #d69725;
+        color: #eee;
+    }
 }
 
 .section-chart {
     .category-chart {
-        width: 800px;
+        width: 1200px;
         height: 800px;
         margin: 0 auto;
     }
@@ -40,5 +75,18 @@ body {
         width: 800px;
         height: 800px;
         margin: 0 auto;
+    }
+
+    .payment-way-chart {
+        width: 1200px;
+        height: 800px;
+        margin: 0 auto;
+    }
+
+}
+
+.pay-area {
+    dt {
+        color: #d0882c;
     }
 }

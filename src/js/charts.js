@@ -1,10 +1,11 @@
 import data from './consumeData';
-import { CATEGORY, SUBCATE } from './types';
+import { CATEGORY, SUBCATE, PARTICIPANT } from './types';
 import { exchangeToRMB } from './utils';
 
 export default function init() {
     renderCategoryChart();
     renderDailyConsumeChart();
+    renderPaymentWayChart();
 }
 
 function renderCategoryChart() {
@@ -278,7 +279,7 @@ function getDailyOption() {
                 stack: '总量',
                 label: {
                     normal: {
-                        show: true,
+                        // show: true,
                         position: 'insideRight'
                     }
                 },
@@ -290,7 +291,7 @@ function getDailyOption() {
                 stack: '总量',
                 label: {
                     normal: {
-                        show: true,
+                        // show: true,
                         position: 'insideRight'
                     }
                 },
@@ -302,7 +303,7 @@ function getDailyOption() {
                 stack: '总量',
                 label: {
                     normal: {
-                        show: true,
+                        // show: true,
                         position: 'insideRight'
                     }
                 },
@@ -314,7 +315,7 @@ function getDailyOption() {
                 stack: '总量',
                 label: {
                     normal: {
-                        show: true,
+                        // show: true,
                         position: 'insideRight'
                     }
                 },
@@ -362,4 +363,168 @@ function classifyDailyData() {
         });
     });
     return categoryData;
+}
+
+function renderPaymentWayChart() {
+    let $container = $('.section-chart .payment-way-chart');
+    let paymentChart = echarts.init($container.get(0));
+    paymentChart.setOption(getPaymentWayOption());
+}
+
+function classifyPaymentWayData() {
+    let totalData = [
+        {
+            name: '现金',
+            value: 0,
+        },
+        {
+            name: '信用卡/线上付款',
+            value: 0,
+        }
+    ];
+    let cateData = [
+        {
+            name: PARTICIPANT.CASH,
+            value: 0,
+        },
+        {
+            name: PARTICIPANT.YANG,
+            value: 0,
+        },
+        {
+            name: PARTICIPANT.PC,
+            value: 0,
+        },
+        {
+            name: PARTICIPANT.JIAN,
+            value: 0,
+        },
+        {
+            name: PARTICIPANT.MAY,
+            value: 0,
+        },
+    ]
+    let cateIndex = {
+        [cateData[1].name]: 1,
+        [cateData[2].name]: 2,
+        [cateData[3].name]: 3,
+        [cateData[4].name]: 4,
+    }
+    data.map(item => {
+        if (item.payer === PARTICIPANT.CASH) {
+            totalData[0].value += exchangeToRMB({
+                value: item.payment,
+                currency: item.currency
+            });
+        }
+        else {
+            let cate = cateData[cateIndex[item.payer]];
+            let payment_CHY = exchangeToRMB({
+                value: item.payment,
+                currency: item.currency
+            });
+            cate.value += payment_CHY;
+            totalData[1].value += payment_CHY;
+        }
+    });
+    cateData[0].value = totalData[0].value;
+
+    return {
+        totalData,
+        cateData,
+    }
+}
+
+function getPaymentWayOption() {
+    let { totalData, cateData } = classifyPaymentWayData();
+
+    return {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data:[
+                '现金',
+                '信用卡/线上付款',
+                PARTICIPANT.YANG,
+                PARTICIPANT.PC,
+                PARTICIPANT.JIAN,
+                PARTICIPANT.MAY,
+                PARTICIPANT.CASH 
+            ]
+        },
+        series: [
+            {
+                name:'支付方式',
+                type:'pie',
+                selectedMode: 'single',
+                radius: [0, '30%'],
+    
+                label: {
+                    normal: {
+                        position: 'inner'
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: totalData
+            },
+            {
+                name:'付款人占比',
+                type:'pie',
+                radius: ['40%', '55%'],
+                label: {
+                    normal: {
+                        formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                        backgroundColor: '#eee',
+                        borderColor: '#aaa',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        // shadowBlur:3,
+                        // shadowOffsetX: 2,
+                        // shadowOffsetY: 2,
+                        // shadowColor: '#999',
+                        // padding: [0, 7],
+                        rich: {
+                            a: {
+                                color: '#999',
+                                lineHeight: 22,
+                                align: 'center'
+                            },
+                            // abg: {
+                            //     backgroundColor: '#333',
+                            //     width: '100%',
+                            //     align: 'right',
+                            //     height: 22,
+                            //     borderRadius: [4, 4, 0, 0]
+                            // },
+                            hr: {
+                                borderColor: '#aaa',
+                                width: '100%',
+                                borderWidth: 0.5,
+                                height: 0
+                            },
+                            b: {
+                                fontSize: 16,
+                                lineHeight: 33
+                            },
+                            per: {
+                                color: '#eee',
+                                backgroundColor: '#334455',
+                                padding: [2, 4],
+                                borderRadius: 2
+                            }
+                        }
+                    }
+                },
+                data: cateData 
+            }
+        ]
+    };
 }

@@ -17,22 +17,20 @@ export default function init() {
 export function calcAA() {
     let possesses = calcEveryonePossess();
     let consumes = calcEveryoneConsume();
+    toFixed2(possesses, consumes);
+
     let debts = calcEveryoneDebt();
-    debugger
     console.log(debts);
-    let totalPossess = getTotal(possesses);
-    let totalConsume = getTotal(consumes);
-    let untracked = totalPossess - totalConsume;
+    let totalPossess = +(getTotal(possesses).toFixed(2));
+    let totalConsume = +(getTotal(consumes).toFixed(2));
+    let untracked = +(totalPossess - totalConsume).toFixed(2);
     console.log(`总支出￥${totalPossess}`);
     console.log(`总消费￥${totalConsume}`);
-    console.log(
-        `未被记录的消费总额￥${untracked}, 人均￥${untracked / 4}`
-    );
+    console.log(`未被记录的消费总额￥${untracked}, 人均￥${untracked / 4}`);
     // 把未被记录的消费平摊到每个人的消费里
     Object.keys(consumes).map(consumer => {
         consumes[consumer] += untracked / 4;
     });
-    debugger
     let aaTracks = payByAA(debts);
 
     if (aaTracks) {
@@ -56,8 +54,8 @@ export function calcAA() {
         for (let consumer in PARTICIPANT) {
             if (
                 PARTICIPANT.hasOwnProperty(consumer) &&
-                consumer !== PARTICIPANT.CASH
-                && consumer !== 'ALL'
+                consumer !== PARTICIPANT.CASH &&
+                consumer !== "ALL"
             ) {
                 consumes[consumer] = 0;
             }
@@ -99,7 +97,7 @@ export function calcAA() {
             if (
                 PARTICIPANT.hasOwnProperty(participant) &&
                 participant !== PARTICIPANT.CASH &&
-                participant !== 'ALL'
+                participant !== "ALL"
             ) {
                 possesses[participant] = possessRate[participant] * cash.num;
             }
@@ -148,18 +146,25 @@ export function payByAA(debts) {
     let i = 0; // payee游标
     let j = 0; // payer游标
 
-    while (i !== payee.length && j !== payer.length) {
-        let remain = payee[i] + payer[j];
+    // while (i !== payee.length && j !== payer.length) {
+    while (i < payee.length && j < payer.length) {
+        let remain = payee[i].num + payer[j].num;
         if (remain >= 0) {
             tracks.push(
-                `payer${j} 应向 payee${i} 支付 ￥${Math.abs(payer[j])}`
+                `${payer[j].consumer} 应向 ${
+                    payee[i].consumer
+                } 支付 ￥${Math.abs(payer[j].num)}`
             );
-            payee[i] = remain;
+            payee[i].num = remain;
             j++;
             remain === 0 && i++;
         } else if (remain < 0) {
-            tracks.push(`payer${j} 应向 payee${i} 支付 ￥${payee[i]}`);
-            payer[j] = remain;
+            tracks.push(
+                `${payer[j].consumer} 应向 ${payee[i].consumer} 支付 ￥${
+                    payee[i].num
+                }`
+            );
+            payer[j].num = remain;
             i++;
         }
     }
@@ -198,6 +203,21 @@ function renderConsumeTable(data) {
         list: data
     });
     $(".section-aa .consume-table-wrapper").html(html);
+    $('.consume-table-wrapper .btn').on('click', ev => {
+        let $btn = $(ev.currentTarget);
+        let $table = $('.table-wrapper');
+
+        if ($btn.hasClass('fold')) {
+            $btn.removeClass('fold');
+            $btn.text('收起')
+            $table.height('auto');
+        }
+        else {
+            $btn.addClass('fold');
+            $btn.text('展开')
+            $table.height(400);
+        }
+    })
 }
 
 function renderSettlement(results) {
@@ -205,7 +225,7 @@ function renderSettlement(results) {
         tracks: results.aaTracks,
         others: [
             {
-                title: "总支出",
+                title: "总支出(现金+信用卡/线上付款)",
                 num: results.totalPossess
             },
             {
@@ -213,7 +233,7 @@ function renderSettlement(results) {
                 num: results.totalConsume
             },
             {
-                title: "未被记录的消费",
+                title: "未被记录的消费(支出-消费)",
                 num: results.totalPossess - results.totalConsume
             }
         ]
@@ -229,5 +249,16 @@ function transDataToCH() {
                 return PARTICIPANT_CH[p];
             })
         });
+    });
+}
+
+function toFixed2(consumes, possesses) {
+    // 取后两位小数
+    Object.keys(consumes).map(key => {
+        consumes[key] = +consumes[key].toFixed(2);
+    });
+    // 取后两位小数
+    Object.keys(possesses).map(key => {
+        possesses[key] = +possesses[key].toFixed(2);
     });
 }

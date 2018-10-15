@@ -248,6 +248,16 @@ export default [
         participants: PARTICIPANT.ALL
     },
     {
+        payment: 572.46,
+        payer: PARTICIPANT.YANG,
+        currency: CURRENCY.USD,
+        date: '2018-10-03',
+        desc: '菲斯酒店两晚',
+        category: CATEGORY.HOTEL,
+        subCate: SUBCATE.RIAD,
+        participants: PARTICIPANT.ALL
+    },
+    {
         payment: 50,
         payer: PARTICIPANT.CASH,
         currency: CURRENCY.DH,
