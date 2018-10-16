@@ -61,6 +61,24 @@ export default [
         participants: PARTICIPANT.ALL,
     },
     {
+        payment: 50,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-09-27',
+        desc: '星巴克，我用现金付的',
+        category: CATEGORY.OTHERS,
+        participants: [PARTICIPANT.YANG]
+    },
+    {
+        payment: 40,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-09-28',
+        desc: '一打矿泉水',
+        category: CATEGORY.OTHERS,
+        participants: PARTICIPANT.ALL,
+    },
+    {
         payment: 2200,
         payer: PARTICIPANT.PC,
         currency: CURRENCY.DH,
@@ -163,10 +181,19 @@ export default [
     {
         payment: 350,
         payer: PARTICIPANT.YANG,
+        currency: CURRENCY.RMB,
+        date: '2018-09-30',
+        desc: '阿伊特本哈杜中餐（中国红）',
+        category: CATEGORY.DIET,
+        participants: PARTICIPANT.ALL
+    },
+    {
+        payment: 150,
+        payer: PARTICIPANT.CASH,
         currency: CURRENCY.DH,
         date: '2018-09-30',
-        desc: '餐饮费',
-        category: CATEGORY.DIET,
+        desc: '阿伊特本哈杜导游小费',
+        category: CATEGORY.OTHERS,
         participants: PARTICIPANT.ALL
     },
     {
@@ -210,6 +237,36 @@ export default [
         participants: PARTICIPANT.ALL,
     },
     {
+        payment: 70,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-10-02',
+        desc: '到菲斯那晚停车被坑的小费',
+        category: CATEGORY.OTHERS,
+        subCate: SUBCATE.TIP,
+        participants: PARTICIPANT.ALL,
+    },
+    {
+        payment: 40,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-10-02',
+        desc: '到菲斯那晚停车被坑的小费',
+        category: CATEGORY.OTHERS,
+        subCate: SUBCATE.TIP,
+        participants: PARTICIPANT.ALL,
+    },
+    {
+        payment: 62,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-10-03',
+        desc: '菲斯老街买的点心',
+        category: CATEGORY.DIET,
+        subCate: SUBCATE.MOFOOD,
+        participants: PARTICIPANT.ALL,
+    },
+    {
         payment: 720,
         payer: PARTICIPANT.CASH,
         currency: CURRENCY.DH,
@@ -225,6 +282,15 @@ export default [
         currency: CURRENCY.DH,
         date: '2018-10-02',
         desc: '菲斯导游费',
+        category: CATEGORY.OTHERS,
+        participants: PARTICIPANT.ALL
+    },
+    {
+        payment: 80,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-10-02',
+        desc: '神学院门票',
         category: CATEGORY.OTHERS,
         participants: PARTICIPANT.ALL
     },
@@ -278,6 +344,16 @@ export default [
         participants: PARTICIPANT.ALL
     },
     {
+        payment: 405,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        date: '2018-10-03',
+        desc: '菲斯的中餐馆喝粥',
+        category: CATEGORY.DIET,
+        subCate: SUBCATE.CHFOOD,
+        participants: PARTICIPANT.ALL
+    },
+    {
         payment: 255,
         payer: PARTICIPANT.PC,
         currency: CURRENCY.RMB,
@@ -325,6 +401,25 @@ export default [
         date: '2018-10-04',
         category: CATEGORY.HOTEL,
         subCate: SUBCATE.RIAD,
+        participants: PARTICIPANT.ALL
+    },
+    {
+        payment: 56,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '在舍夫沙万寄的明信片',
+        date: '2018-10-04',
+        category: CATEGORY.OTHERS,
+        participants: [PARTICIPANT.YANG]
+    },
+    {
+        payment: 60,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '从酒店搬行李刀停车地方的小费',
+        date: '2018-10-04',
+        category: CATEGORY.OTHERS,
+        subCate: SUBCATE.TIP,
         participants: PARTICIPANT.ALL
     },
     {
@@ -397,6 +492,16 @@ export default [
         participants: PARTICIPANT.ALL
     },
     {
+        payment: 200,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '斯帕特尔角中午吃饭',
+        date: '2018-10-05',
+        category: CATEGORY.DIET,
+        subCate: SUBCATE.WEFOOD,
+        participants: PARTICIPANT.ALL,
+    },
+    {
         payment: 100,
         payer: PARTICIPANT.CASH,
         currency: CURRENCY.DH,
@@ -404,6 +509,15 @@ export default [
         date: '2018-10-05',
         category: CATEGORY.TRAFFIC,
         subCate: SUBCATE.TAXI,
+        participants: PARTICIPANT.ALL,
+    },
+    {
+        payment: 100,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '超速罚单，忘记哪一天了',
+        date: '2018-10-05',
+        category: CATEGORY.TRAFFIC,
         participants: PARTICIPANT.ALL,
     },
     {
@@ -563,5 +677,21 @@ export default [
         desc: '围巾，纪念品，早餐蛋糕，马拉喀什香包，菲斯下午茶',
         category: CATEGORY.OTHERS,
         participants: [PARTICIPANT.PC]
+    },
+    {
+        payment: 140,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '我剩的现金',
+        category: CATEGORY.OTHERS,
+        participants: [PARTICIPANT.YANG]
+    },
+    {
+        payment: 100,
+        payer: PARTICIPANT.CASH,
+        currency: CURRENCY.DH,
+        desc: '剑飞剩的现金',
+        category: CATEGORY.OTHERS,
+        participants: [PARTICIPANT.JIAN]
     }
 ]

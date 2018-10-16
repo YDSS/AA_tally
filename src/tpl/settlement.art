@@ -4,6 +4,11 @@
         <dt class="col-sm-9">{{track}}</dd>
         {{/each}}
     </dl>
+    <dl class="consume-area row">
+        {{each debts item index}}
+        <dd class="col-sm-12">{{@ item}}</dd>
+        {{/each}}
+    </dl>
     <dl class="data-area row">
         {{each others item index}}
         <dt class="col-sm-5">{{item.title}}</dt>

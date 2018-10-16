@@ -19,7 +19,7 @@ export function calcAA() {
     let consumes = calcEveryoneConsume();
     toFixed2(possesses, consumes);
 
-    let debts = calcEveryoneDebt();
+    let { debts, debtsTrack } = calcEveryoneDebt();
     console.log(debts);
     let totalPossess = +(getTotal(possesses).toFixed(2));
     let totalConsume = +(getTotal(consumes).toFixed(2));
@@ -43,6 +43,7 @@ export function calcAA() {
         possesses,
         consumes,
         debts,
+        debtsTrack,
         totalPossess,
         totalConsume,
         aaTracks
@@ -108,6 +109,7 @@ export function calcAA() {
 
     function calcEveryoneDebt() {
         let debts = [];
+        let debtsTrack = [];
 
         for (let consumer in consumes) {
             if (consumes.hasOwnProperty(consumer)) {
@@ -126,11 +128,19 @@ export function calcAA() {
                             debt < 0 ? "需还￥" + Math.abs(debt) : ""
                         }`
                     );
+                    debtsTrack.push(
+                        `<em>${consumer}</em> 总共支出了<strong>￥${possess}</strong>, 消费了<strong>￥${consume}</strong> ${
+                            debt < 0 ? "需还<strong>￥" + Math.abs(debt) + '</strong>' : ""
+                        }`
+                    )
                 }
             }
         }
 
-        return debts;
+        return {
+            debts,
+            debtsTrack
+        };
     }
 }
 
@@ -223,6 +233,7 @@ function renderConsumeTable(data) {
 function renderSettlement(results) {
     let html = settlementRenderer({
         tracks: results.aaTracks,
+        debts: results.debtsTrack,
         others: [
             {
                 title: "总支出(现金+信用卡/线上付款)",
